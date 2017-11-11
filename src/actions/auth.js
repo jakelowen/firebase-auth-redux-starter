@@ -6,6 +6,7 @@ import type {
   Dispatch,
 } from '../types/auth';
 
+require('firebase/firestore');
 
 // pull out firebase into its own file soon.
 const config = {
@@ -18,6 +19,9 @@ const config = {
 };
 
 Firebase.initializeApp(config);
+// Initialize Cloud Firestore through Firebase
+// $FlowFixMe
+const db = Firebase.firestore();
 
 export function authUser(uid: string): authUserActionType {
   return {
@@ -33,41 +37,51 @@ export function authError(error: { code: string, message: string }): authErrorAc
   };
 }
 
-export function signUpUser(credentials: { email: string, password: string }) {
-  return (dispatch: Dispatch) => {
-    Firebase.auth().createUserWithEmailAndPassword(credentials.email, credentials.password)
-      // I don't think we need this because onAuthStateChanged should catch it
-      // .then(() => {
-      //   dispatch(authUser());
-      // })
-      .catch((error) => {
-        dispatch(authError(error));
+export function createUserRecord(uid: string, firstName: string, lastName: string, email: string) {
+  return db.collection('users').doc(uid).set({
+    firstName,
+    lastName,
+    email,
+    uid,
+  });
+}
+
+export function signUpUser(firstName: string, lastName: string, email: string, password: string) {
+  return (dispatch: Dispatch) =>
+    Firebase.auth().createUserWithEmailAndPassword(email, password)
+      .then((user) => {
+        createUserRecord(user.uid, firstName, lastName, email);
+        dispatch({
+          type: 'RECORD_USER_DETAILS',
+          payload: {
+            uid: user.uid,
+            firstName,
+            lastName,
+            email,
+          },
+        });
       });
-  };
 }
 
 export function signInUser(credentials: { email: string, password: string }) {
-  return (dispatch: Dispatch) => {
+  return (dispatch: Dispatch) =>
     Firebase.auth().signInWithEmailAndPassword(credentials.email, credentials.password)
-      // I don't think we need this because onAuthStateChanged should catch it
-      // .then(() => {
-      //     dispatch(authUser());
-      //   })
       .catch((error) => {
         dispatch(authError(error));
       });
-  };
 }
 
 export function signOutUser() {
-  return (dispatch: Dispatch) => {
-    Firebase.auth().signOut()
-      .then(() => {
-        dispatch({
-          type: 'SIGN_OUT_USER',
-        });
+  return (dispatch: Dispatch) => Firebase.auth().signOut()
+    .then(() => {
+      dispatch({
+        type: 'SIGN_OUT_USER',
       });
-  };
+    });
+}
+
+export function sendPasswordResetEmail(email: string) {
+  return Firebase.auth().sendPasswordResetEmail(email);
 }
 
 export function verifyAuth() {

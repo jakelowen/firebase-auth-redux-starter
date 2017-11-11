@@ -24,10 +24,21 @@ export type authErrorActionType = {
   }
 }
 
+export type recordUserDetails = {
+  type: 'RECORD_USER_DETAILS',
+  payload: {
+    uid: string,
+    firstName: string,
+    lastName: string,
+    email: string,
+  },
+}
+
 export type Action =
   | authUserActionType
   | authErrorActionType
   | signOutUserActionType
+  | recordUserDetails
 
 export type GetState = () => State;
 export type PromiseAction = Promise<Action>;

@@ -3,12 +3,14 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "classnames": "^2.2.5",
     "enzyme": "^3.1.1",
     "enzyme-adapter-react-16": "^1.0.4",
     "eslint-config-airbnb": "^16.1.0",
     "firebase": "^4.6.2",
     "flow-bin": "^0.59.0",
     "flow-typed": "^2.2.3",
+    "formik": "^0.10.3",
     "react": "^16.1.0",
     "react-dom": "^16.1.0",
     "react-redux": "^5.0.6",
@@ -20,7 +22,8 @@
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
     "tachyons": "^4.9.0",
-    "tachyons-cli": "^1.2.0"
+    "tachyons-cli": "^1.2.0",
+    "yup": "^0.23.0"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -34,16 +37,7 @@
   "jest": {
     "collectCoverageFrom": [
       "src/**/*.{js,jsx}",
-      "!<rootDir>/node_modules/",
-      "!<rootDir>/path/to/dir/"
-    ],
-    "coverageThreshold": {
-      "global": {
-        "branches": 90,
-        "functions": 90,
-        "lines": 90,
-        "statements": 90
-      }
-    }
+      "!<rootDir>/node_modules/"
+    ]
   }
 }

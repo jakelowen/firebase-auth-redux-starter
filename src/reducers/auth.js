@@ -5,6 +5,7 @@ const initialState: State = {
   authenticated: false,
   error: null,
   uid: null,
+  profile: {},
 };
 
 export default function reducer(state: State = initialState, action: Action) {
@@ -22,12 +23,19 @@ export default function reducer(state: State = initialState, action: Action) {
         authenticated: false,
         error: null,
         uid: null,
+        profile: {},
       };
     case 'AUTH_ERROR':
       return {
         ...state,
         error: action.payload.message,
         uid: null,
+        profile: {},
+      };
+    case 'RECORD_USER_DETAILS':
+      return {
+        ...state,
+        profile: action.payload,
       };
     default:
       return state;
