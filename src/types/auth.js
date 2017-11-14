@@ -16,6 +16,14 @@ export type signOutUserActionType = {
   type: 'SIGN_OUT_USER'
 }
 
+export type updateUserProfileActionType = {
+  type: 'UPDATE_USER_DETAILS',
+  payload: {
+    firstName?: string,
+    lastName?: string
+  }
+}
+
 export type authErrorActionType = {
   type: 'AUTH_ERROR',
   payload: {
@@ -39,6 +47,7 @@ export type Action =
   | authErrorActionType
   | signOutUserActionType
   | recordUserDetails
+  | updateUserProfileActionType
 
 export type GetState = () => State;
 export type PromiseAction = Promise<Action>;

@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AuthActions authUser action creator matches snapshot  1`] = `
+Object {
+  "payload": "12345",
+  "type": "AUTH_USER",
+}
+`;
+
+exports[`AuthActions authUser action creator matches snapshot  2`] = `
+Object {
+  "payload": Object {
+    "code": "12345",
+    "message": "error!",
+  },
+  "type": "AUTH_ERROR",
+}
+`;

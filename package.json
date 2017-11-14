@@ -17,10 +17,12 @@
     "react-router-dom": "^4.2.2",
     "react-scripts": "1.0.17",
     "react-test-renderer": "^16.1.0",
+    "react-transition-group": "^2.2.1",
     "redux": "^3.7.2",
     "redux-devtools-extension": "^2.13.2",
     "redux-logger": "^3.0.6",
     "redux-thunk": "^2.2.0",
+    "styled-components": "^2.2.3",
     "tachyons": "^4.9.0",
     "tachyons-cli": "^1.2.0",
     "yup": "^0.23.0"
@@ -28,7 +30,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
+    "test": "react-scripts test --env=jsdom --browser",
     "eject": "react-scripts eject",
     "css": "tachyons src/css/app.css > src/index.css --minify",
     "prestart": "npm run css",

@@ -10,7 +10,9 @@ import FormButton from './elements/FormButton';
 type Props = {
   signInUser: Function,
   history: Object,
-  isAuthenticated: boolean
+  isAuthenticated: boolean,
+  sendErrorMessage: Function,
+  authError: Function
 };
 
 class SignInPage extends Component<Props> {
@@ -29,7 +31,12 @@ class SignInPage extends Component<Props> {
 
   render() {
     return (
-      <SignInForm signInUser={this.props.signInUser} redirect={this.props.history.push} />
+      <SignInForm
+        signInUser={this.props.signInUser}
+        redirect={this.props.history.push}
+        sendErrorMessage={this.props.sendErrorMessage}
+        authError={this.props.authError}
+      />
     );
   }
 }
@@ -111,16 +118,20 @@ const SignInForm = withFormik({
         props.redirect('/account');
       })
       .catch((error) => {
+        props.authError(error);
         switch (error.code) {
           case 'auth/user-not-found':
           case 'auth/wrong-password':
-            setErrors({ formwide: 'The username or password you have entered is invalid.' });
+            // setErrors({ formwide: 'The username or password you have entered is invalid.' });
+            props.sendErrorMessage('The username or password you have entered is invalid.');
             break;
           default:
-            setErrors({ formwide: 'Sorry, Something went wrong.' });
+            // setErrors({ formwide: 'Sorry, Something went wrong.' });
+            props.sendErrorMessage('Sorry, Something went wrong.');
             break;
         }
         // console.error(error);
+        setSubmitting(false);
       });
   },
 })(InnerForm);

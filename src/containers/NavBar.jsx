@@ -1,3 +1,4 @@
+// @flow
 import { connect } from 'react-redux';
 import { signOutUser } from '../actions/auth';
 import NavBar from '../components/NavBar';

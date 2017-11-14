@@ -8,8 +8,10 @@ import FormButton from './elements/FormButton';
 import FormWideError from './elements/FormWideError';
 import { equalTo } from '../../src/helpers';
 
-const SignUpPage = ({ signUpUser, history }: { signUpUser: Function, history: Object }) =>
-  <SignUpForm signUpUser={signUpUser} redirect={history.push} />;
+/*
+const SignUpPage = ({ signUpUser, history, sendErrorMessage }: { signUpUser: Function, history: Object, sendErrorMessage: Function }) =>
+  <SignUpForm signUpUser={signUpUser} redirect={history.push} sendErrorMessage={sendErrorMessage} />;
+*/
 
 Yup.addMethod(Yup.string, 'equalTo', equalTo);
 // Our inner form component which receives our form's state and updater methods as props
@@ -124,29 +126,33 @@ const SignUpForm = withFormik({
       .required('Must confirm Password'),
   }),
   // Submission handler
-  handleSubmit: (values, { props, setSubmitting, setErrors }) => {
+  handleSubmit: (values, {
+ props, setSubmitting, setErrors, setValues 
+}) => {
     props.signUpUser(values.firstName, values.lastName, values.email, values.password)
       .then(() => {
         setSubmitting(false);
         props.redirect('/account');
       })
       .catch((error) => {
+        console.log('!!!!', error);
         switch (error.code) {
           case 'auth/email-already-in-use':
-            setErrors({ formwide: 'There is already an account tied to this email address.' });
+            props.sendErrorMessage('There is already an account tied to this email address.');
             break;
           case 'auth/invalid-email':
-            setErrors({ formwide: 'Invalid email address' });
+            props.sendErrorMessage('Invalid email address');
             break;
           case 'auth/weak-password':
-            setErrors({ formwide: 'Your password is too weak. Try something harder to guess.' });
+            props.sendErrorMessage('Your password is too weak. Try something harder to guess.');
             break;
           default:
-            setErrors({ formwide: 'Sorry, Something went wrong.' });
+            props.sendErrorMessage('Sorry, Something went wrong.');
             break;
         }
+        setSubmitting(false);
       });
   },
 })(InnerForm);
 
-export default SignUpPage;
+export default SignUpForm;

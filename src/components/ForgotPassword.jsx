@@ -8,8 +8,10 @@ import FormButton from './elements/FormButton';
 import FormWideError from './elements/FormWideError';
 import FormWideNotification from './elements/FormWideNotification';
 
+/*
 const PasswordForgetPage = ({ sendPasswordResetEmail }: { sendPasswordResetEmail: Function }) =>
   <PasswordForgetForm sendPasswordResetEmail={sendPasswordResetEmail} />;
+*/
 
 // Our inner form component which receives our form's state and updater methods as props
 const InnerForm = ({
@@ -52,7 +54,7 @@ const InnerForm = ({
             <div className="f6 link dim black db">Don&apos;t have an account?</div>
           </Link>
           <Link to="/signin">
-            <div href="#0" className="f6 link dim black db">Sign In</div>
+            <div className="f6 link dim black db">Sign In</div>
           </Link>
         </div>
       </form >
@@ -70,19 +72,21 @@ const PasswordForgetForm = withFormik({
       .required('Email is required!'),
   }),
   // Submission handler
-  handleSubmit: (values, { props, setSubmitting, setStatus }) => {
+  handleSubmit: (values, { props, setSubmitting }) => {
     props.sendPasswordResetEmail(values.email)
       .then(() => {
         setSubmitting(false);
-        setStatus('Email sent. Check your inbox');
+        // setStatus('Email sent. Check your inbox');
+        props.sendSuccessMessage('Email sent. Check your inbox');
       })
       .catch(() => {
         // Dont tell them if account exists or not.
         setSubmitting(false);
-        setStatus('Email sent. Check your inbox');
+        // setStatus('Email sent. Check your inbox');
+        props.sendSuccessMessage('Email sent. Check your inbox');
       });
   },
 })(InnerForm);
 
 
-export default PasswordForgetPage;
+export default PasswordForgetForm;
